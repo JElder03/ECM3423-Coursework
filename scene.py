@@ -206,17 +206,23 @@ class Scene:
                         self.mouse_mvt = pygame.mouse.get_rel()
                 else:
                     self.mouse_mvt = None
+    
+    def animate():
+        return
 
-    def run(self):
+    def run(self, fps = 30):
         '''
         Draws the scene in a loop until exit.
         '''
 
         self.running = True
+        self.animating = False
+        self.FPS = fps
+        self.last_frame = time.time()
+
         while self.running:
             self.pygameEvents()
-
-            # continue drawing the scene
+            self.animate()
             self.draw()
         
         '''
