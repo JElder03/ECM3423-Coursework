@@ -162,6 +162,18 @@ class ParisOlympicsScene(Scene):
         elif event.key == pygame.K_f:
             print("Stopping animation")
             self.animating = False
+        elif event.key == pygame.K_p:
+            print("Updating Shaders")
+            for object in self.objects + self.animated_objects + self.rope_objects:
+                object.bind_shader('phong')
+            for object in self.reflective_objects:
+                object.bind_shader(EnvironmentShader(map=object.shader.map, name = 'environment_phong'))
+        elif event.key == pygame.K_o:
+            print("Updating Shaders")
+            for object in self.objects + self.animated_objects + self.rope_objects:
+                object.bind_shader('flat')
+            for object in self.reflective_objects:
+                object.bind_shader(EnvironmentShader(map=object.shader.map, name = 'environment'))
 
     def animate(self):
         if time.time() - self.last_frame >= self.FPS / 1000:
