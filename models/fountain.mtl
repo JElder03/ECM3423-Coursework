@@ -2,7 +2,7 @@
 
 newmtl mat0
 Ns 250
-Ka 1.0 1.0 1.0
+Ka 0 0 0
 Kd 1 1 1
 Ks 0.23884 0.23884 0.23884
 Ke 0.0 0.0 0.0
@@ -13,7 +13,7 @@ map_Kd fountain1.png
 
 newmtl mat1
 Ns 250
-Ka 1.0 1.0 1.0
+Ka 0 0 0
 Kd 1 1 1
 Ks 0 0 0
 Ke 0.0 0.0 0.0
@@ -24,7 +24,7 @@ map_Kd fountain2.png
 
 newmtl mat2
 Ns 250
-Ka 1.0 1.0 1.0
+Ka 0 0 0
 Kd 0.41077 0.53995 0.86889
 Ks 0.39084 0.39084 0.39084
 Ke 0.0 0.0 0.0
@@ -34,7 +34,7 @@ illum 9
 
 newmtl mat3
 Ns 250
-Ka 1.0 1.0 1.0
+Ka 0 0 0
 Kd 0.85 0.85 0.85
 Ks 0 0 0
 Ke 0.0 0.0 0.0

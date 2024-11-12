@@ -25,12 +25,12 @@ class ParisOlympicsScene(Scene):
     def __init__(self):
         Scene.__init__(self,width=1000, height=1000, cameraCenter=[-0,7,-7], cameraAngle=[np.pi, 0])
         
-        cauldron_light = LightSource(self, position=[0,-6.5,7], Ia=[0.1,0.1,0.05], Id=[0.9,0.9,0.4], Is=[1.0,1.0,0.4])
-        self.statue_light = LightSource(self, position=[0,-4.95,-8], Ia=[0.05,0.05,0.05], Id=[0.8,0.8,0.8], Is=[0.8,0.8,0.8])
-        self.lights = [cauldron_light,self.statue_light]
+        self.cauldron_light = LightSource(self, position=[0,-6.5,7], Ia=[0.06,0.035,0.03], Id=[0.9,0.5,0], Is=[1.0,0.5,0])
+        statue_light = LightSource(self, position=[0,-4.95,-8], Ia=[0.02,0.02,0.02], Id=[0.8,0.8,0.8], Is=[0.8,0.8,0.8])
+        self.lights = [self.cauldron_light, statue_light]
 
         # for shadow map rendering
-        self.shadows = ShadowMap(light=self.statue_light)
+        #self.shadows = ShadowMap(light=self.statue_light)
 
         self.environment1 = EnvironmentMappingTexture(width=1000, height=1000, center=[-2.5,4,7.5], rotation=[0,np.pi/15,0])
         self.environment2 = EnvironmentMappingTexture(width=1000, height=1000, center=[0,-5,-8], rotation=[0,-np.pi/15,0])
@@ -38,6 +38,15 @@ class ParisOlympicsScene(Scene):
         self.skybox = SkyBox(scene=self)
         
         self.initialise_objects()
+
+        self.animated_init_positions = []
+        for object in self.animated_objects:
+            self.animated_init_positions.append(object.M)
+
+        self.ropes_init_positions = []
+        for object in self.rope_objects:
+            self.animated_init_positions.append(object.M)
+
 
         '''
         meshes = load_obj_file('models/scene2.obj')
@@ -84,20 +93,21 @@ class ParisOlympicsScene(Scene):
 
         rope = load_obj_file('models/rope.obj')
 
-        ropesMeshes = []
+        self.rope_objects = []
+        self.ropes_center = np.array([0,-5.5,7])
         for i in range(10):
             for mesh in rope:
-                ropesMeshes.append(DrawModelFromMesh(scene=self, M=np.matmul(pointRotiationY(i * np.pi/5, position=[0,-5.5,7]), poseMatrix(position=[1.3,-5.2,7], scale=0.28, orientation=[0,0,np.pi/15])), mesh=mesh, shader=FlatShader()))
+                self.rope_objects.append(DrawModelFromMesh(scene=self, M=np.matmul(pointRotiationY(i * np.pi/5, position=self.ropes_center), poseMatrix(position=[1.3,-5.2,7], scale=0.28, orientation=[0,0,np.pi/15])), mesh=mesh, shader=FlatShader()))
         
         self.objects = chariotMeshes + [horseMesh1] + [horseMesh2] + [horseMesh3] + [horseMesh4] + treeMeshes + [athenaMesh] + spotlightMeshes + fountainMeshes + [archMesh]
         self.reflective_objects = [venusMesh1] + [venusMesh2]                                                                                                                                                                                        
-        self.animated_objects = [torusMesh] + [sphereMesh] + [_ for _ in ropesMeshes]
+        self.animated_objects = [torusMesh] + [sphereMesh]
 
     def draw_reflections(self, exclude=[]):
         glClear(GL_DEPTH_BUFFER_BIT)
         self.skybox.draw()
 
-        for mesh in self.objects + self.reflective_objects + self.animated_objects:
+        for mesh in self.objects + self.reflective_objects + self.animated_objects + self.rope_objects:
             if mesh not in exclude:
                 if type(mesh) is list:
                     print(len(mesh))
@@ -129,7 +139,7 @@ class ParisOlympicsScene(Scene):
 
             glDisable(GL_BLEND)
 
-        for mesh in self.objects + self.reflective_objects + self.animated_objects:
+        for mesh in self.objects + self.reflective_objects + self.animated_objects + self.rope_objects:
             mesh.draw()
 
         # once we are done drawing, we display the scene
@@ -154,9 +164,23 @@ class ParisOlympicsScene(Scene):
             self.animating = False
 
     def animate(self):
-        if self.last_frame - time.time() >= 1000/self.FPS:
-            print('test')
+        if time.time() - self.last_frame >= self.FPS / 1000:
+            translation = np.array([0.01, 0.02, -0.02])  # Ensure translation is also a numpy array
+            rotation =  np.pi / self.FPS
+            self.last_frame = time.time()
+            
+            self.ropes_center += translation
+            self.cauldron_light.position += translation
 
+            self.animated_objects[0].M = np.matmul(translationMatrix(translation), self.animated_objects[0].M)
+            self.animated_objects[0].M = np.matmul(pointRotiationY(rotation, position=self.ropes_center), self.animated_objects[0].M)
+            self.animated_objects[1].M = np.matmul(translationMatrix(translation), self.animated_objects[1].M)
+            self.animated_objects[1].M = np.matmul(pointRotiationY(rotation, position=self.ropes_center), self.animated_objects[1].M)
+
+            for rope in self.rope_objects:
+                rope.M = np.matmul(translationMatrix(translation), rope.M)
+                rope.M = np.matmul(pointRotiationY(rotation, position=self.ropes_center), rope.M)
+                
 
 if __name__ == '__main__':
     # initialises the scene object
@@ -164,4 +188,4 @@ if __name__ == '__main__':
     scene = ParisOlympicsScene()
 
     # starts drawing the scene
-    scene.run()
+    scene.run(fps=60)

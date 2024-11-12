@@ -206,9 +206,6 @@ class Scene:
                         self.mouse_mvt = pygame.mouse.get_rel()
                 else:
                     self.mouse_mvt = None
-    
-    def animate():
-        return
 
     def run(self, fps = 30):
         '''
@@ -222,7 +219,8 @@ class Scene:
 
         while self.running:
             self.pygameEvents()
-            self.animate()
+            if self.animating:
+                self.animate()
             self.draw()
         
         '''
