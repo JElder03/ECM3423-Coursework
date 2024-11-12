@@ -1,7 +1,5 @@
 import pygame
 
-# import the scene class
-from cubeMap import FlattenCubeMap
 from scene import Scene
 
 from lightSource import LightSource
