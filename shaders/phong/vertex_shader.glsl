@@ -25,8 +25,6 @@ void main() {
 
     // 2. calculate vectors used for shading calculations
     // those will be interpolate before being sent to the
-    // fragment shader.
-    // TODO WS4
     position_view_space = vec3(VM*vec4(position,1.0f));
     normal_view_space = normalize(VMiT*normal);
 
