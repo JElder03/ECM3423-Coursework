@@ -254,7 +254,7 @@ def create_mesh(varray, tarray, flist, fstart, f, library, material):
 	# fix blender texture intexing
 	textures = None
 	
-	if tarray is not None and tarray != []:
+	if tarray is not None and len(tarray) != 0:
 		textures = fix_blender_textures(tarray, farray, varray)
 		textures = textures[vmin:vmax, :]
 	

@@ -98,68 +98,6 @@ class Texture:
 
         self.unbind()
 
-    def set_shadow_comparison(self):
-        """
-        Sets the texture to use shadow comparison mode, useful for shadow mapping.
-        """
-
-        self.set_parameter(GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE)
-
-    def set_parameter(self, param: int, value: int):
-        """
-        Sets a specific parameter for the texture.
-        
-        :param param: The parameter to set (e.g., GL_TEXTURE_COMPARE_MODE).
-        :param value: The value for the parameter.
-        """
-
-        self.bind()
-        glTexParameteri(self.target, param, value)
-        self.unbind()
-
-    def set_wrap_parameter(self, wrap: int = GL_REPEAT):
-        """
-        Sets the wrap mode for the texture.
-        
-        :param wrap: Wrapping mode for the texture (e.g., GL_REPEAT).
-        """
-
-        self.wrap = wrap
-        self.bind()
-        glTexParameteri(self.target, GL_TEXTURE_WRAP_S, wrap)
-        glTexParameteri(self.target, GL_TEXTURE_WRAP_T, wrap)
-        self.unbind()
-
-    def set_sampling_parameter(self, sample: int = GL_NEAREST):
-        """
-        Sets the sampling mode for the texture.
-        
-        :param sample: Sampling filter for the texture (e.g., GL_NEAREST).
-        """
-
-        self.sample = sample
-        self.bind()
-        glTexParameteri(self.target, GL_TEXTURE_MAG_FILTER, sample)
-        glTexParameteri(self.target, GL_TEXTURE_MIN_FILTER, sample)
-        self.unbind()
-
-    def set_data_from_image(self, data: np.ndarray, width: int = None, height: int = None):
-        """
-        Loads texture data from a numpy array and sets it as the texture's content.
-        
-        :param data: The image data as a numpy array.
-        :param width: Optional width of the texture (default is data width).
-        :param height: Optional height of the texture (default is data height).
-        """
-
-        if isinstance(data, np.ndarray):
-            width = data.shape[0]
-            height = data.shape[1]
-
-        self.bind()
-        glTexImage2D(self.target, 0, self.format, width, height, 0, self.format, self.type, data)
-        self.unbind()
-
     def bind(self):
         """
         Binds the texture for use in OpenGL rendering.
