@@ -301,14 +301,3 @@ class PhongShader(BaseShaderProgram):
 class FlatShader(PhongShader):
     def __init__(self, name='flat'):
         PhongShader.__init__(self, name)
-
-
-class BlinnShader(PhongShader):
-    def __init__(self, name='blinn'):
-        PhongShader.__init__(self, name)
-
-
-class TextureShader(PhongShader):
-    def __init__(self, name='texture'):
-        PhongShader.__init__(self, name)
-

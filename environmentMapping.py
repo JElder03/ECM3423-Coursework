@@ -1,4 +1,3 @@
-from BaseModel import DrawModelFromMesh
 from mesh import *
 from cubeMap import CubeMap
 from shaders import *
@@ -150,26 +149,3 @@ class EnvironmentMappingTexture(CubeMap):
         scene.P = Pscene
 
         self.unbind()
-
-
-class EnvironmentBox(DrawModelFromMesh):
-    """
-    A drawable cube used to represent an environment box, typically used to display
-    environment reflections.
-    """
-
-    def __init__(self, scene, shader: EnvironmentShader = EnvironmentShader(), width: int = 200, height: int = 200):
-        """
-        Initializes an EnvironmentBox with a cube mesh and an environment mapping texture.
-        
-        :param scene: The scene in which this environment box will be rendered.
-        :param shader: The shader program to use for rendering the environment.
-        :param width: Width of the environment mapping texture.
-        :param height: Height of the environment mapping texture.
-        """
-        
-        self.done = False
-        self.map = EnvironmentMappingTexture(width, height)  # Create an environment map texture
-
-        # Initialize a cube mesh for the environment box, using the provided shader
-        super().__init__(scene=scene, M=poseMatrix(), mesh=CubeMesh(shader.map), shader=shader, visible=False)
