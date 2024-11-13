@@ -9,6 +9,7 @@ class FlattenedCubeShader(BaseShaderProgram):
     '''
     Base class for rendering the flattened cube.
     '''
+
     def __init__(self):
         BaseShaderProgram.__init__(self, name='flattened_cube')
 
@@ -104,11 +105,11 @@ class FlattenCubeMap(DrawModelFromMesh):
         # create a mesh from the object
         mesh = Mesh(vertices=vertices, faces=faces, textureCoords=textureCoords)
 
-        # add the CubeMap object if provided (otherwise you need to call set() at a later stage)
+        # add the CubeMap object if provided
         if cube is not None:
             mesh.textures.append(cube)
 
-        # Finishes initialising the mesh
+        # finishes initialising the mesh
         DrawModelFromMesh.__init__(self, scene=scene, M=poseMatrix(position=[0,0,+1]), mesh=mesh, shader=FlattenedCubeShader(), visible=False)
 
     def set(self, cube):
@@ -116,14 +117,15 @@ class FlattenCubeMap(DrawModelFromMesh):
         Set the cube map to display
         :param cube: A CubeMap texture
         '''
+
         self.mesh.textures = [cube]
 
 
 class CubeMap(Texture):
     '''
     Class for handling a cube map texture.
-
     '''
+
     def __init__(self, name=None, files=None, wrap=GL_CLAMP_TO_EDGE, sample=GL_LINEAR, format=GL_RGBA, type=GL_UNSIGNED_BYTE):
         '''
         Initialise the cube map texture object
@@ -135,12 +137,13 @@ class CubeMap(Texture):
         :param format: The pixel format of the image and texture (GL_RGBA). Do not change.
         :param type: The data format for the texture. Default is GL_UNSIGNED_BYTE (should not be changed)
         '''
+
         self.name = name
         self.format = format
         self.type = type
         self.wrap = wrap
         self.sample = sample
-        self.target = GL_TEXTURE_CUBE_MAP # we set the texture target as a cube map
+        self.target = GL_TEXTURE_CUBE_MAP # set the texture target as a cube map
 
         # This dictionary contains the file name for each face, if loading from disk (otherwise ignored)
         self.files = {
@@ -192,7 +195,8 @@ class CubeMap(Texture):
 
     def update(self, scene):
         '''
-        Used to update the texture, does not do anything at the moment, but could be extended for the environment mapping.
+        Used to update the texture, does not do anything at the moment, but is extended for the environment mapping.
         '''
+
         pass
 

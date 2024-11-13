@@ -1,14 +1,14 @@
-from BaseModel import BaseModel
-from matutils import poseMatrix
-# imports all openGL functions
 from OpenGL.GL import *
 import numpy as np
 from mesh import Mesh
 from material import Material
-from texture import Texture
 
 
 class Sphere(Mesh):
+    '''
+    Create a sphere mesh
+    '''
+
     def __init__(self, nvert=10, nhoriz=20, material=Material()):
         n = (nvert-1)*nhoriz+2
         vertices = np.zeros((n, 3), 'f')
@@ -86,6 +86,5 @@ class Sphere(Mesh):
                       vertices=vertices,
                       faces=indices,
                       textureCoords=textureCoords,
-                      material=material,
-                      colors=np.array([[1,1,1] for _ in range(len(vertices))])
+                      material=material
                       )

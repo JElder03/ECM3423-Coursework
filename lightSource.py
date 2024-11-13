@@ -2,8 +2,7 @@ import numpy as np
 
 class LightSource:
     '''
-    Base class for maintaining a light source in the scene. Inheriting from Sphere allows to visualize the light
-    source position easily.
+    Base class for maintaining a light source in the scene.
     '''
     def __init__(self, scene, position=[2.,2.,0.], Ia=[0.5,0.5,0.5], Id=[0.9,0.9,0.9], Is=[1.0,1.0,1.0]):
         '''
@@ -22,8 +21,9 @@ class LightSource:
 
     def update(self, position=None):
         '''
-        update the position of the light source.
+        Update the position of the light source.
         :param position: [optional] sets the current light source position.
         '''
+
         if position is not None:
             self.position = position

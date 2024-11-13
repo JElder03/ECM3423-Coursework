@@ -14,6 +14,7 @@ def process_line(line):
 	Function for reading the Blender3D object file, line by line. Clearly
 	minimalistic and slow as it is, but it will do the job nicely for this course.
 	'''
+
 	label = None
 	fields = line.split()
 	if len(fields) == 0:
@@ -51,7 +52,6 @@ def process_line(line):
 		else:
 			return (label, fields[1])
 
-	# check this
 	elif fields[0] == 's':
 		label = 's???'
 		return None
@@ -62,14 +62,9 @@ def process_line(line):
 			print('(E) Error, 3 or 4 entries expected for faces\n{}'.format(line))
 			return None
 
-
-		# multiple formats for faces lines, eg
-		# f 586/1 1860/2 1781/3
-		# f vi/ti/ni
-		# where vi is the vertex index
-		# ti is the texture index
-		# ni is the normal index (optional)
 		return ( label, [ [np.uint32(i) for i in v.split('/')] for v in fields[1:] ] )
+	
+	# Ignore vn and o - inefficient but not worth implementing currently
 	elif fields[0] == 'vn' or fields[0] == 'o':
 		return None
 	else:
@@ -124,6 +119,7 @@ def load_obj_file(file_name, reflect=False):
 	Function for loading a Blender3D object file. minimalistic, and partial,
 	but sufficient for this course. You do not really need to worry about it.
 	'''
+
 	print('Loading mesh(es) from Blender file: {}'.format(file_name))
 
 	vlist = []	# list of vertices
@@ -177,7 +173,7 @@ def load_obj_file(file_name, reflect=False):
 					mlist.append(material)
 					lnlist.append(line_nb)
 				else:
-					# converts quads into pairs of  triangles
+					# converts quads into pairs of triangles
 					face1 = [data[1][0], data[1][1], data[1][2]]
 					flist.append(face1)
 					mesh_list.append(mesh_id)
@@ -193,7 +189,7 @@ def load_obj_file(file_name, reflect=False):
 			elif data[0] == 'material library':
 				library = load_material_library('models/{}'.format(data[1]))
 
-			# material indicate a new mesh in the file, so we store the previous one if not empty and start
+			# material indicate a new mesh in the file, so the previous one is stored if not empty and start
 			# a new one.
 			elif data[0] == 'material':
 				material = library.names[data[1]]
@@ -211,7 +207,7 @@ def create_meshes_from_blender(vlist, flist, mlist, tlist, library, mesh_list, l
 	mesh_id = 1
 	meshes = []
 
-	# we start by putting all vertices in one array
+	# start by putting all vertices in one array
 	varray = np.array(vlist, dtype='f')
 
 	# and all texture vectors
@@ -279,7 +275,6 @@ def fix_blender_textures(textures, faces, vertices):
 	:param faces: Blender faces multiple-index
 	:return: a new texture array indexed according to vertices.
 	'''
-	# (OpenGL, unlike Blender, does not allow for multiple indexing!)
 
 	if faces.shape[2] == 1:
 		print('(W) No texture indices provided, setting texture coordinate array as None!')

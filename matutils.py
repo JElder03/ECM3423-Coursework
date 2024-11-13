@@ -1,9 +1,5 @@
 import numpy as np
 
-REFLECT_XY = np.diag([1,1,-1,1])
-REFLECT_YZ = np.diag([-1,1,1,1])
-REFLECT_XZ = np.diag([1,-1,1,1])
-
 def scaleMatrix(scale):
     if np.isscalar(scale):
         scale = [scale, scale, scale]
@@ -55,7 +51,7 @@ def pointRotiationY(angle, position=[0,0,0]):
     return R
 
 
-def poseMatrix(position=[0,0,0], orientation=0, scale=1, reflect=[False, False, False]):
+def poseMatrix(position=[0,0,0], orientation=0, scale=1):
     '''
     Returns a combined TRS matrix for the pose of a model.
     :param position: the position of the model
@@ -66,46 +62,18 @@ def poseMatrix(position=[0,0,0], orientation=0, scale=1, reflect=[False, False, 
     # apply the position and orientation of the object
     m=np.diag([1,1,1,1])
 
-    if reflect[0]:
-        m = np.matmul(m, REFLECT_XY)
-    if reflect[1]:
-        m = np.matmul(m, REFLECT_YZ)
-    if reflect[2]:
-        m = np.matmul(m, REFLECT_XY)
-
     if np.isscalar(orientation):
         R = rotationMatrixZ(orientation)
     else:
         R = np.matmul(np.matmul(rotationMatrixX(orientation[0]),rotationMatrixY(orientation[1])), rotationMatrixZ(orientation[2]))
     T = translationMatrix(position)
 
-    # ... and the scale factor
+    # apply the scale factor
     S = scaleMatrix(scale)
 
     m = np.matmul(np.matmul(np.matmul(T,m),R),S)
 
     return m
-
-
-def orthoMatrix(l,r,t,b,n,f):
-    '''
-    Returns an orthographic projection matrix
-    :param l: left clip plane
-    :param r: right clip plane
-    :param t: top clip plane
-    :param b: bottom clip plane
-    :param n: near clip plane
-    :param f: far clip plane
-    :return: A 4x4 orthographic projection matrix
-    '''
-    return np.array(
-        [
-        [2./(r-l),      0.,         0.,         (r+l)/(r-l) ],
-        [0.,            -2./(t-b),   0.,         (t+b)/(t-b) ],
-        [0.,            0.,         2./(f-n),  (f+n)/(f-n) ],
-        [0.,            0.,         0.,         1.          ]
-        ]
-    )
 
 def frustumMatrix(l,r,t,b,n,f):
     return np.array(
@@ -124,9 +92,3 @@ def homog(v):
 
 def unhomog(vh):
     return vh[:-1]/vh[-1]
-
-def matmul(L):
-    R = L[0]
-    for M in L[1:]:
-        R = np.matmul(R,M)
-    return R

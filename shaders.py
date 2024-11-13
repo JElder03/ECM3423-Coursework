@@ -126,7 +126,6 @@ class BaseShaderProgram:
             print('Load vertex shader from file: {}'.format(vertex_shader))
             with open(vertex_shader, 'r') as file:
                 self.vertex_shader_source = file.read()
-            # print(self.vertex_shader_source)
 
         # load the fragment shader GLSL code
         if fragment_shader is None:
@@ -140,7 +139,6 @@ class BaseShaderProgram:
             print('Load fragment shader from file: {}'.format(fragment_shader))
             with open(fragment_shader, 'r') as file:
                 self.fragment_shader_source = file.read()
-            # print(self.fragment_shader_source)
 
         # in order to simplify extension of the class in the future, we start storing uniforms in a dictionary.
         self.uniforms = {
@@ -162,10 +160,6 @@ class BaseShaderProgram:
             glAttachShader(self.program, shaders.compileShader(self.vertex_shader_source, shaders.GL_VERTEX_SHADER))
             glAttachShader(self.program, shaders.compileShader(self.fragment_shader_source, shaders.GL_FRAGMENT_SHADER))
 
-            #self.program = shaders.compileProgram(
-            #    shaders.compileShader(self.vertex_shader_source, shaders.GL_VERTEX_SHADER),
-            #    shaders.compileShader(self.fragment_shader_source, shaders.GL_FRAGMENT_SHADER)
-            #)
         except RuntimeError as error:
             print('(E) An error occured while compiling {} shader:\n {}\n... forwarding exception...'.format(self.name, error)),
             raise error
@@ -305,10 +299,10 @@ class PhongShader(BaseShaderProgram):
         glUseProgram(0)
 
 
-
 class FlatShader(PhongShader):
     def __init__(self, name='flat'):
         PhongShader.__init__(self, name)
+
 
 class BlinnShader(PhongShader):
     def __init__(self, name='blinn'):

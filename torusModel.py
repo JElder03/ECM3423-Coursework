@@ -1,12 +1,14 @@
-from BaseModel import BaseModel
-from matutils import poseMatrix
 from OpenGL.GL import *
 import numpy as np
 from mesh import Mesh
 from material import Material
-from texture import Texture
+
 
 class Torus(Mesh):
+    '''
+    Create a torus mesh
+    '''
+    
     def __init__(self, inner_radius=0.5, outer_radius=1.0, nvert=30, nhoriz=30, material=Material()):
         # Calculate the number of vertices and initialize arrays
         n = nvert * nhoriz

@@ -40,6 +40,7 @@ class ShowTextureShader(BaseShaderProgram):
     '''
     Base class for rendering the flattened cube.
     '''
+
     def __init__(self):
         BaseShaderProgram.__init__(self, name='show_texture')
 
@@ -82,9 +83,9 @@ class ShowTexture(DrawModelFromMesh):
         # create a mesh from the object
         mesh = Mesh(vertices=vertices, faces=faces, textureCoords=textureCoords)
 
-        # add the CubeMap object if provided (otherwise you need to call set() at a later stage)
+        # add the CubeMap object if provided
         if texture is not None:
             mesh.textures.append(texture)
 
-        # Finishes initialising the mesh
+        # finishes initialising the mesh
         DrawModelFromMesh.__init__(self, scene=scene, M=poseMatrix(position=[0, 0, 1]), mesh=mesh, shader=ShowTextureShader(), visible=False)

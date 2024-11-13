@@ -1,7 +1,5 @@
-from BaseModel import BaseModel,DrawModelFromMesh
+from BaseModel import DrawModelFromMesh
 from mesh import *
-from matutils import *
-from texture import *
 from shaders import *
 from cubeMap import CubeMap
 
@@ -19,8 +17,6 @@ class SkyBoxShader(BaseShaderProgram):
         Vr[:3, :3] = V[:3, :3]
 
         self.uniforms['PVM'].bind(np.matmul(P, np.matmul(V, M)))
-        #self.uniforms['PVM'].bind(np.matmul(V, M))
-
 
 
 class SkyBox(DrawModelFromMesh):

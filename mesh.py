@@ -6,10 +6,9 @@ from texture import Texture
 
 class Mesh:
     '''
-    Simple class to hold a mesh data. For now we will only focus on vertices, faces (indices of vertices for each face)
-    and normals.
+    Simple class to hold a mesh data
     '''
-    def __init__(self, vertices=None, faces=None, normals=None, textureCoords=None, material=Material(), colors=None):
+    def __init__(self, vertices=None, faces=None, normals=None, textureCoords=None, material=Material()):
         '''
         Initialises a mesh object.
         :param vertices: A numpy array containing all vertices
@@ -21,7 +20,6 @@ class Mesh:
         self.vertices = vertices
         self.faces = faces
         self.material = material
-        self.colors = colors
         self.textureCoords = textureCoords
         self.textures = []
         self.tangents = None
@@ -33,10 +31,6 @@ class Mesh:
             if faces is not None:
                 print('- {} faces'.format(self.faces.shape[0]))
 
-        #if faces is not None:
-        #    print('- {} vertices per face'.format(self.faces.shape[1]))
-            #print('- vertices ID in range [{},{}]'.format(np.min(self.faces.flatten()), np.max(self.faces.flatten())))
-
         if normals is None:
             if faces is None:
                 print('(W) Warning: the current code only calculates normals using the face vector of indices, which was not provided here.')
@@ -47,16 +41,11 @@ class Mesh:
 
         if material.texture is not None:
             self.textures.append(Texture(material.texture))
-            #self.textures.append(Texture('lena.bmp'))
 
 
     def calculate_normals(self):
         '''
-        method to calculate normals from the mesh faces.
-        TODO WS3: Fix this code to calculate the correct normals
-        Use the approach discussed in class:
-        1. calculate normal for each face using cross product
-        2. set each vertex normal as the average of the normals over all faces it belongs to.
+        Calculate normals from the mesh faces.
         '''
 
         self.normals = np.zeros((self.vertices.shape[0], 3), dtype='f')
@@ -64,9 +53,8 @@ class Mesh:
             self.tangents = np.zeros((self.vertices.shape[0], 3), dtype='f')
             self.binormals = np.zeros((self.vertices.shape[0], 3), dtype='f')
 
-        #TODO WS3
         for f in range(self.faces.shape[0]):
-            # first calculate the face normal using the cross product of the triangle's sides
+            # calculate the face normal using the cross product of the triangle's sides
             a = self.vertices[self.faces[f, 1]] - self.vertices[self.faces[f, 0]]
             b = self.vertices[self.faces[f, 2]] - self.vertices[self.faces[f, 0]]
             face_normal = np.cross(a, b)
@@ -85,7 +73,7 @@ class Mesh:
                     self.tangents[self.faces[f, j], :] += face_tangent
                     self.binormals[self.faces[f, j], :] += face_binormal
 
-        # finally we need to normalize the vectors
+        # normalize the vectors
         self.normals /= np.linalg.norm(self.normals, axis=1, keepdims=True)
         if self.textureCoords is not None:
             self.tangents /= np.linalg.norm(self.tangents, axis=1, keepdims=True)
@@ -142,7 +130,7 @@ class CubeMesh(Mesh):
         if inside:
             faces = faces[:, np.argsort([0, 2, 1])]
 
-        textureCoords = None # np.array([], dtype='f')
+        textureCoords = None
 
         Mesh.__init__(self, vertices=vertices, faces=faces, textureCoords=textureCoords)
 

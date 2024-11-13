@@ -9,9 +9,10 @@ class Framebuffer:
         '''
         Initialise the framebuffer.
         :param attachment: Which output of the rendering process to save (GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, ...)
-        :param texture: (optional) if provided, link the framebuffer to the texture object
-        :param texture_id: (optional) if provided, link the framebuffer to a texture ID directly
+        :param texture: [optional] if provided, link the framebuffer to the texture object
+        :param texture_id: [optional] if provided, link the framebuffer to a texture ID directly
         '''
+
         self.attachment = attachment
         self.fbo = glGenFramebuffers(1)
 
@@ -33,6 +34,7 @@ class Framebuffer:
         :param target: The target of the rendering, if not the default for the texture (use for cube maps)
         :param level: The mipmap level (ignore)
         '''
+
         target = target if target is not None else texture.target
         self.bind()
         glFramebufferTexture2D(GL_FRAMEBUFFER, self.attachment, target, texture.textureid, level)
@@ -48,6 +50,7 @@ class Framebuffer:
         :param target: The target of the rendering
         :param level: The mipmap level (ignore)
         '''
+
         self.bind()
         glFramebufferTexture2D(GL_FRAMEBUFFER, self.attachment, target, texture_id, level)
         if self.attachment == GL_DEPTH_ATTACHMENT:
