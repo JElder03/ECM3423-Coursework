@@ -1,6 +1,5 @@
-from BaseModel import BaseModel, DrawModelFromMesh
+from BaseModel import DrawModelFromMesh
 from mesh import *
-from OpenGL.GL.framebufferobjects import *
 from cubeMap import CubeMap
 from shaders import *
 from framebuffer import Framebuffer

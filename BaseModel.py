@@ -1,9 +1,6 @@
 from OpenGL.GL import *
 
-from matutils import *
-
 from mesh import Mesh
-
 from shaders import *
 
 

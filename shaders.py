@@ -1,8 +1,7 @@
-# imports all openGL functions
 from OpenGL.GL import *
+
 from OpenGL.GL import shaders
 from matutils import *
-# we will use numpy to store data in arrays
 import numpy as np
 
 

@@ -4,7 +4,6 @@ import time
 from OpenGL.GL import *
 from shaders import *
 from camera import Camera
-from matutils import *
 
 from lightSource import LightSource
 

@@ -1,7 +1,6 @@
 from texture import *
 from mesh import Mesh
 from BaseModel import DrawModelFromMesh
-from matutils import *
 from shaders import *
 
 

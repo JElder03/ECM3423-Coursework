@@ -6,7 +6,6 @@ from scene import Scene
 from lightSource import LightSource
 from blender import load_obj_file
 from BaseModel import DrawModelFromMesh
-from shaders import *
 from sphereModel import Sphere
 from torusModel import Torus
 from skyBox import *

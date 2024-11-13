@@ -1,6 +1,5 @@
 from matutils import *
 
-
 class Camera:
     '''
     Base class for handling the camera.
